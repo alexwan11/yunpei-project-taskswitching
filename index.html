@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Switching Experiment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="instructions">
+        <h1>Instructions</h1>
+        <div id="instructions-text">
+            <p>In the <strong>shape</strong> task:</p>
+            <p>If you see a circle, press the <strong>b</strong> key</p>
+            <p>If you see a rectangle, press the <strong>n</strong> key</p>
+            <p>In the <strong>color</strong> task:</p>
+            <p>If the stimulus is yellow, press the <strong>b</strong> key</p>
+            <p>If the stimulus is blue, press the <strong>n</strong> key</p>
+        </div>
+        <button id="start-sample-button" class="button">Start Sample</button>
+        <button id="start-experiment-button" class="button">Start Experiment</button>
+    </div>
+    <div class="sample-area" id="sample-area">
+        <div class="left-part" id="left-part">
+            <div class="stimulus" id="shape-task"></div>
+            <p>Shape Task: Press 'b' for circle, 'n' for rectangle.</p>
+        </div>
+        <div class="right-part" id="right-part">
+            <div class="stimulus" id="color-task"></div>
+            <p>Color Task: Press 'b' for yellow, 'n' for blue.</p>
+        </div>
+    </div>
+    <div class="experiment-area" id="experiment-area">
+        <div class="left-part-experiment" id="left-part-experiment">
+            <div class="stimulus" id="shape-task-experiment"></div>
+        </div>
+        <div class="right-part-experiment" id="right-part-experiment">
+            <div class="stimulus" id="color-task-experiment"></div>
+        </div>
+    </div>
+    <table id="results-table"></table>
+    <script src="sample.js"></script>
+    <script src="experiment.js"></script>
+</body>
+</html>

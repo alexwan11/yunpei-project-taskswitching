@@ -1,0 +1,42 @@
+body {
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.experiment-area {
+    background-color: black;
+    border: 2px solid yellow;
+    padding: 20px;
+    display: block;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+    height: 50vh;
+}
+.left-part{
+    background-color: black;
+    color: yellow;
+    width: 45%;
+    text-align: center;
+    float: left; 
+    display: none;
+}
+
+.right-part{
+    background-color: black;
+    color: yellow;
+    width: 45%;
+    text-align: center;
+    float: right; 
+}
+
+
+
