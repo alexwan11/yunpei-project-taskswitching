@@ -87,16 +87,12 @@ function recordResult(task, reactionTime, correct) {
 }
 
 function downloadResults() {
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
-    const csvData = csvHeader + csvContent;
-
     fetch('http://your_server_ip_or_domain:3000/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ results })
+        body: JSON.stringify(results)
     })
     .then(response => {
         if (response.ok) {
