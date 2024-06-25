@@ -4,26 +4,28 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000; // 你可以选择任何你喜欢的端口
+const PORT = 3000;
 
+// Middleware
 app.use(bodyParser.json());
 
-// 处理POST请求，保存结果到服务器
+// Endpoint to receive experiment results
 app.post('/save-results', (req, res) => {
-    const results = req.body.results;
-    const filePath = path.join(__dirname, 'experiment_results.csv');
+    const results = req.body;
 
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
+    const filePath = path.join(__dirname, 'experiment_results.csv');
+
     fs.writeFile(filePath, csvData, (err) => {
         if (err) {
-            console.error('Error writing file:', err);
-            res.status(500).send('Internal Server Error');
-            return;
+            console.error('Error saving results:', err);
+            return res.status(500).send('Error saving results');
         }
-        res.status(200).send('Results saved successfully');
+
+        res.send('Results saved successfully');
     });
 });
 
