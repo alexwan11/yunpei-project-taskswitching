@@ -87,7 +87,7 @@ function recordResult(task, reactionTime, correct) {
 }
 
 function downloadResults() {
-    fetch('http://your_server_ip_or_domain:3000/save-results', {
+    fetch('http://121.40.133.54/:3000/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
