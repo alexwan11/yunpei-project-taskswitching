@@ -91,14 +91,26 @@ function downloadResults() {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "experiment_results.csv");
-    document.body.appendChild(link);
-
-    link.click();
+    fetch('http://your_server_ip_or_domain:3000/save-results', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ results })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Results saved successfully');
+        } else {
+            alert('Failed to save results');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error occurred while saving results');
+    });
 }
+
 
 document.addEventListener('keydown', (event) => {
     if (!isExperimentRunning) return; // Ignore key events if the experiment is not running
