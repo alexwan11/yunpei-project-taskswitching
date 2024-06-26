@@ -25,7 +25,15 @@ app.post('/save-results', (req, res) => {
             return res.status(500).send('Error saving results');
         }
 
-        res.send('Results saved successfully');
+        // Also save the file to /home/alex/project folder
+        const projectPath = path.join('/home/alex/project', 'experiment_results.csv');
+        fs.writeFile(projectPath, csvData, (err) => {
+            if (err) {
+                console.error('Error saving results to project folder:', err);
+                return res.status(500).send('Error saving results to project folder');
+            }
+            res.send('Results saved successfully');
+        });
     });
 });
 
