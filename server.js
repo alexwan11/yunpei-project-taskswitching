@@ -2,11 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors'); // Import CORS middleware
+
 const app = express();
 const port = 3000;
 
-// Middleware to parse JSON bodies
+// Middleware to parse JSON bodies and handle CORS
 app.use(bodyParser.json());
+app.use(cors()); // Enable CORS for all routes
 
 // POST endpoint to save results
 app.post('/save-results', (req, res) => {
@@ -17,8 +20,16 @@ app.post('/save-results', (req, res) => {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
+    // Define the directory and file path
+    const directory = path.join(__dirname, 'project');
+    const filePath = path.join(directory, 'experiment_results.csv');
+
+    // Ensure the directory exists
+    if (!fs.existsSync(directory)){
+        fs.mkdirSync(directory);
+    }
+
     // Save CSV file locally
-    const filePath = path.join(__dirname, 'project', 'experiment_results.csv');
     fs.writeFile(filePath, csvData, (err) => {
         if (err) {
             console.error('Error saving CSV file:', err);
