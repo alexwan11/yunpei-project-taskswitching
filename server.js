@@ -21,12 +21,12 @@ app.post('/save-results', (req, res) => {
     const csvData = csvHeader + csvContent;
 
     // Define the directory and file path
-    const directory = path.join(__dirname, 'project');
+    const directory = '/home/alex/project';
     const filePath = path.join(directory, 'experiment_results.csv');
 
     // Ensure the directory exists
     if (!fs.existsSync(directory)){
-        fs.mkdirSync(directory);
+        fs.mkdirSync(directory, { recursive: true });
     }
 
     // Save CSV file locally
