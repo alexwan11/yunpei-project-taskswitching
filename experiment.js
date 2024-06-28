@@ -92,7 +92,7 @@ function downloadResults() {
     const csvData = csvHeader + csvContent;
 
     // Send results to the server
-    fetch('http://121.40.113.54:3000/save-results', {
+    fetch('http://121.40.133.54:3000/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
