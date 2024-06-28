@@ -91,6 +91,7 @@ function downloadResults() {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
+    // Send results to the server
     fetch('http://121.40.113.54:3000/save-results', {
         method: 'POST',
         headers: {
@@ -100,24 +101,25 @@ function downloadResults() {
     })
     .then(response => {
         if (response.ok) {
-            alert('Results saved successfully');
+            alert('Results saved successfully on the server');
+
+            // Trigger file download to the user's local machine
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "experiment_results.csv");
+            document.body.appendChild(link);
+            link.click();
         } else {
             response.text().then(text => alert('Failed to save results: ' + text));
         }
-
-        // Trigger file download to the user's local machine
-        const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "experiment_results.csv");
-        document.body.appendChild(link);
-        link.click();
     })
     .catch(error => {
         console.error('Error:', error);
         alert('Error occurred while saving results: ' + error.message);
     });
 }
+
 
 document.addEventListener('keydown', (event) => {
     if (!isExperimentRunning) return; // Ignore key events if the experiment is not running

@@ -18,7 +18,7 @@ app.post('/save-results', (req, res) => {
     const csvData = csvHeader + csvContent;
 
     // Save CSV file locally
-    const filePath = path.join(__dirname, 'experiment_results.csv');
+    const filePath = path.join(__dirname, 'project', 'experiment_results.csv');
     fs.writeFile(filePath, csvData, (err) => {
         if (err) {
             console.error('Error saving CSV file:', err);
