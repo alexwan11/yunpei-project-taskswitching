@@ -15,7 +15,7 @@ body {
     text-align: center;
 }
 
-.sample-area {
+.sample-area, .experiment-area {
     background-color: black;
     border: 2px solid yellow;
     padding: 20px;
@@ -27,51 +27,12 @@ body {
     height: 50vh;
 }
 
-.experiment-area {
-    background-color: black;
-    border: 2px solid yellow;
-    padding: 20px;
-    display: none;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 60%;
-    height: 50vh;
-}
-
-.left-part {
+.left-part, .right-part, .left-part-experiment, .right-part-experiment, .left-part-experiment-difficult, .right-part-experiment-difficult {
     background-color: black;
     color: yellow;
     width: 45%;
     text-align: center;
     float: left;
-    visibility: hidden;
-}
-
-.right-part {
-    background-color: black;
-    color: yellow;
-    width: 45%;
-    text-align: center;
-    float: right;
-    visibility: hidden;
-}
-
-.left-part-experiment {
-    background-color: black;
-    color: yellow;
-    width: 45%;
-    text-align: center;
-    float: left;
-    visibility: hidden;
-}
-
-.right-part-experiment {
-    background-color: black;
-    color: yellow;
-    width: 45%;
-    text-align: center;
-    float: right;
     visibility: hidden;
 }
 
@@ -93,6 +54,44 @@ body {
     height: 100px;
     background-color: currentColor;
     margin: 0 auto;
+}
+
+.shape-circle-in-square {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.shape-circle-in-square::before {
+    content: "";
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: currentColor;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.shape-square-in-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: relative;
+    background-color: currentColor;
+    margin: 0 auto;
+}
+
+.shape-square-in-circle::before {
+    content: "";
+    width: 70px;
+    height: 70px;
+    background-color: currentColor;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: inherit;
 }
 
 button {

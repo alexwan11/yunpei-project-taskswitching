@@ -17,8 +17,18 @@
             <p>If the stimulus is yellow, press the <strong>b</strong> key</p>
             <p>If the stimulus is blue, press the <strong>n</strong> key</p>
         </div>
+        <div id="instructions-text-difficult">
+            <p>In the <strong>shape</strong> task (difficult):</p>
+            <p>If you see a circle in a square, press the <strong>b</strong> key</p>
+            <p>If you see a square in a circle, press the <strong>n</strong> key</p>
+            <p>In the <strong>color</strong> task:</p>
+            <p>If the stimulus is yellow, press the <strong>b</strong> key</p>
+            <p>If the stimulus is blue, press the <strong>n</strong> key</p>
+            <p><strong>Note:</strong> For shape tasks, choose the color of the inner shape.</p>
+        </div>
         <button id="start-sample-button" class="button">Start Sample</button>
         <button id="start-experiment-button" class="button">Start Experiment</button>
+        <button id="start-experiment-difficult-button" class="button">Start Difficult Experiment</button>
     </div>
     <div class="sample-area" id="sample-area">
         <div class="left-part" id="left-part">
@@ -38,8 +48,18 @@
             <div class="stimulus" id="color-task-experiment"></div>
         </div>
     </div>
+    <div class="experiment-area" id="experiment-area-difficult">
+        <div class="left-part-experiment" id="left-part-experiment-difficult">
+            <div class="stimulus" id="shape-task-experiment-difficult"></div>
+        </div>
+        <div class="right-part-experiment" id="right-part-experiment-difficult">
+            <div class="stimulus" id="color-task-experiment-difficult"></div>
+        </div>
+    </div>
     <table id="results-table"></table>
     <script src="sample.js"></script>
     <script src="experiment.js"></script>
+    <script src="experiment_difficult.js"></script>
+    <script src="my-experiment-backend/server.js"></script>
 </body>
 </html>

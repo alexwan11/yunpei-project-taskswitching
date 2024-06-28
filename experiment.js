@@ -101,23 +101,21 @@ function downloadResults() {
     .then(response => {
         if (response.ok) {
             alert('Results saved successfully');
-            // Trigger file download to the user's local machine
-            const blob = new Blob([csvData], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = 'experiment_results.csv';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
         } else {
-            alert('Failed to save results');
+            response.text().then(text => alert('Failed to save results: ' + text));
         }
+
+        // Trigger file download to the user's local machine
+        const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "experiment_results.csv");
+        document.body.appendChild(link);
+        link.click();
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error occurred while saving results');
+        alert('Error occurred while saving results: ' + error.message);
     });
 }
 
