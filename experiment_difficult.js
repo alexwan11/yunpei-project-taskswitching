@@ -114,7 +114,7 @@ document.addEventListener('keydown', (event) => {
                 correct = true;
             }
         } else if (currentTaskDifficult.shape.includes('square-in-circle')) {
-            if ((currentTaskDifficult.innerColor === 'yello w' && key === 'b') ||
+            if ((currentTaskDifficult.innerColor === 'yellow' && key === 'b') ||
                 (currentTaskDifficult.innerColor === 'blue' && key === 'n')) {
                 correct = true;
             }
@@ -152,7 +152,7 @@ function downloadResults() {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    fetch('http://121.40.133.54:3000/save-results', {
+    fetch('http://localhost:3000/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -179,6 +179,7 @@ function downloadResults() {
         alert('Error occurred while saving results: ' + error.message);
     });
 }
+
 
 
 
