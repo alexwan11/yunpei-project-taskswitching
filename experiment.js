@@ -86,12 +86,12 @@ function recordResult(task, reactionTime, correct) {
     });
 }
 
+// Adjustments in your existing client-side JavaScript
 function downloadResults() {
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    // Send results to the server
     fetch('http://121.40.133.54:3000/save-results', {
         method: 'POST',
         headers: {
@@ -103,7 +103,6 @@ function downloadResults() {
         if (response.ok) {
             alert('Results saved successfully on the server');
 
-            // Trigger file download to the user's local machine
             const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -111,7 +110,7 @@ function downloadResults() {
             document.body.appendChild(link);
             link.click();
         } else {
-            response.text().then(text => alert('Failed to save results: ' + text));
+            return response.text().then(text => { throw new Error(text); });
         }
     })
     .catch(error => {
@@ -119,6 +118,7 @@ function downloadResults() {
         alert('Error occurred while saving results: ' + error.message);
     });
 }
+
 
 
 document.addEventListener('keydown', (event) => {

@@ -2,34 +2,41 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const cors = require('cors'); // Import CORS middleware
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
 
 // Middleware to parse JSON bodies and handle CORS
 app.use(bodyParser.json());
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+    origin: '*', // Allow all origins
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization'
+}));
+
+// Middleware for logging requests
+app.use((req, res, next) => {
+    console.log(`${req.method} request for '${req.url}'`);
+    next();
+});
 
 // POST endpoint to save results
 app.post('/save-results', (req, res) => {
     const results = req.body;
+    console.log('Received results:', results);
 
-    // Generate CSV content
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    // Define the directory and file path
     const directory = '/home/alex/project';
     const filePath = path.join(directory, 'experiment_results.csv');
 
-    // Ensure the directory exists
-    if (!fs.existsSync(directory)){
+    if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true });
     }
 
-    // Save CSV file locally
     fs.writeFile(filePath, csvData, (err) => {
         if (err) {
             console.error('Error saving CSV file:', err);
