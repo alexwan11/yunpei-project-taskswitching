@@ -21,6 +21,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Serve static files from the root directory
+app.use(express.static(path.join(__dirname)));
+
 // POST endpoint to save results
 app.post('/save-results', (req, res) => {
     const results = req.body;
@@ -30,12 +33,8 @@ app.post('/save-results', (req, res) => {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    const directory = '/home/alex/project';
+    const directory = __dirname;
     const filePath = path.join(directory, 'experiment_results.csv');
-
-    if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory, { recursive: true });
-    }
 
     fs.writeFile(filePath, csvData, (err) => {
         if (err) {

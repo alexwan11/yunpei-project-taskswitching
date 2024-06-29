@@ -1,14 +1,14 @@
 let taskCounter = 0;
-const maxTasks = 50; // Change the loop to 50 iterations
-let currentTask = ''; // Keep track of the current task type
-let taskStartTime = 0; // Track task start time for reaction time measurement
+const maxTasks = 50;
+let currentTask = '';
+let taskStartTime = 0;
 const results = [];
 let lastTask = '';
-let isExperimentRunning = false; // Flag to indicate if the experiment is running
+let isExperimentRunning = false;
 
 function startExperiment() {
-    if (isExperimentRunning) return; // Prevent starting the experiment if it's already running
-    isExperimentRunning = true; // Set the flag to indicate the experiment is running
+    if (isExperimentRunning) return;
+    isExperimentRunning = true;
 
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area').style.display = 'flex';
@@ -22,7 +22,6 @@ function showBothParts() {
     leftPart.style.visibility = 'visible';
     rightPart.style.visibility = 'visible';
 
-    // Start the experiment after 2 seconds
     setTimeout(displayStimulus, 2000);
 }
 
@@ -41,7 +40,6 @@ function displayStimulus() {
     const shapes = ['circle', 'rectangle'];
     const colors = ['yellow', 'blue'];
 
-    // Randomly choose the task
     let isShapeTask = Math.random() < 0.5;
     let newTask;
 
@@ -73,8 +71,8 @@ function hideExperimentScreen() {
     document.getElementById('left-part-experiment').style.visibility = 'hidden';
     document.getElementById('right-part-experiment').style.visibility = 'hidden';
     document.querySelector('.instructions').style.display = 'block';
-    taskCounter = 0;  // Reset the task counter for the next experiment
-    isExperimentRunning = false; // Reset the flag when hiding the experiment screen
+    taskCounter = 0;
+    isExperimentRunning = false;
 }
 
 function recordResult(task, reactionTime, correct) {
@@ -86,7 +84,6 @@ function recordResult(task, reactionTime, correct) {
     });
 }
 
-// Adjustments in your existing client-side JavaScript
 function downloadResults() {
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
@@ -119,10 +116,8 @@ function downloadResults() {
     });
 }
 
-
-
 document.addEventListener('keydown', (event) => {
-    if (!isExperimentRunning) return; // Ignore key events if the experiment is not running
+    if (!isExperimentRunning) return;
 
     const key = event.key;
     const reactionTime = new Date().getTime() - taskStartTime;
@@ -156,10 +151,4 @@ function clearScreen() {
     document.getElementById('right-part-experiment').style.visibility = 'hidden';
 }
 
-document.getElementById('start-experiment-button').addEventListener('click', () => {
-    if (!isSampleRunning) { // Start the experiment only if the sample is not running
-        startExperiment();
-    } else {
-        alert("Finish the sample task before starting the experiment.");
-    }
-});
+document.getElementById('start-experiment-button').addEventListener('click', startExperiment);
