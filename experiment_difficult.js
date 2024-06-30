@@ -150,7 +150,7 @@ function downloadResults() {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    fetch('http://121.40.133.54:3000/save-results', {
+    fetch('/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
