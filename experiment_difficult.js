@@ -145,12 +145,12 @@ function clearScreenDifficult() {
 
 document.getElementById('start-experiment-difficult-button').addEventListener('click', startExperimentDifficult);
 
-function downloadResults() {
+function download_difficult_Results() {
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    fetch('/save-results', {
+    fetch('http://121.40.133.54/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

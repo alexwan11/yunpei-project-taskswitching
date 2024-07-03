@@ -1,5 +1,5 @@
 let taskCounter = 0;
-const maxTasks = 50;
+const maxTasks = 10;
 let currentTask = '';
 let taskStartTime = 0;
 const results = [];
@@ -89,7 +89,7 @@ function downloadResults() {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    fetch('/save-results', {
+    fetch('http://121.40.133.54/save-results', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
