@@ -88,24 +88,20 @@ function downloadResults() {
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
+    const blob = new Blob([csvData], { type: 'text/csv' });
 
-    fetch('http://121.40.133.54/save-results', {
+    // Prepare FormData for the server
+    const formData = new FormData();
+    formData.append('file', blob, 'experiment_results.csv');
+
+    // Send the CSV file to the server
+    fetch('http://121.40.133.54:3000/save-results', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(results)
+        body: formData
     })
     .then(response => {
         if (response.ok) {
             alert('Results saved successfully on the server');
-
-            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "experiment_results.csv");
-            document.body.appendChild(link);
-            link.click();
         } else {
             return response.text().then(text => { throw new Error(text); });
         }
@@ -113,8 +109,18 @@ function downloadResults() {
     .catch(error => {
         console.error('Error:', error);
         alert('Error occurred while saving results: ' + error.message);
+    })
+    .finally(() => {
+        // Always download the CSV file locally
+        const encodedUri = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "experiment_results.csv");
+        document.body.appendChild(link);
+        link.click();
     });
 }
+
 
 document.addEventListener('keydown', (event) => {
     if (!isExperimentRunning) return;

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
 
 const app = express();
 const port = 3000;
@@ -24,8 +25,19 @@ app.use((req, res, next) => {
 // Serve static files from the root directory
 app.use(express.static(path.join(__dirname)));
 
-// POST endpoint to save results
-app.post('/save-results', (req, res) => {
+// Configure multer for file upload handling
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '/home/alex/project');
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
+
+// POST endpoint to save results as a file
+app.post('/save-results', upload.single('file'), (req, res) => {
     const results = req.body;
     console.log('Received results:', results);
 
@@ -33,7 +45,7 @@ app.post('/save-results', (req, res) => {
     const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
 
-    const directory = __dirname;
+    const directory = '/home/alex/project';
     const filePath = path.join(directory, 'experiment_results.csv');
 
     fs.writeFile(filePath, csvData, (err) => {
@@ -41,7 +53,7 @@ app.post('/save-results', (req, res) => {
             console.error('Error saving CSV file:', err);
             res.status(500).send('Error saving results');
         } else {
-            console.log('CSV file saved successfully locally');
+            console.log('CSV file saved successfully on server');
             res.status(200).send('Results saved successfully');
         }
     });
