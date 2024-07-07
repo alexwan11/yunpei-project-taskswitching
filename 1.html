@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered CSS Star</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .star {
+            width: 0;
+            height: 0;
+            border-right: 100px solid transparent;
+            border-bottom: 70px solid yellow;
+            border-left: 100px solid transparent;
+            position: relative;
+            top: -45px;
+            transform: rotate(180deg);
+        }
+        .star:before {
+            border-bottom: 80px solid yellow;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            position: absolute;
+            height: 0;
+            width: 0;
+            top: -45px;
+            left: -65px;
+            display: block;
+            content: '';
+            transform: rotate(-35deg);
+        }
+        .star:after {
+            position: absolute;
+            display: block;
+            color: yellow;
+            top: 3px;
+            left: -105px;
+            width: 0;
+            height: 0;
+            border-right: 100px solid transparent;
+            border-bottom: 70px solid yellow;
+            border-left: 100px solid transparent;
+            transform: rotate(-70deg);
+            content: '';
+        }
+    </style>
+</head>
+<body>
+    <div class="star"></div>
+</body>
+</html>

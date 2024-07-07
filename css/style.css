@@ -1,0 +1,203 @@
+.instructions {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sample-area, .experiment-area {
+    background-color: black;
+    border: 2px solid yellow;
+    padding: 20px;
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 118vh;
+    height: 50vh;
+}
+
+.left-part, .right-part, .left-part-experiment, .right-part-experiment, .left-part-experiment-difficult, .right-part-experiment-difficult {
+    background-color: black;
+    color: yellow;
+    width: 45%;
+    text-align: center;
+    float: left;
+    visibility: hidden;
+}
+
+.stimulus {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.shape-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: currentColor;
+    margin: 0 auto;
+}
+
+.shape-rectangle {
+    width: 100px;
+    height: 100px;
+    background-color: currentColor;
+    margin: 0 auto;
+}
+
+.shape-triangle {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid currentColor;
+    margin: 0 auto;
+}
+
+.shape-star {
+    width: 0;
+    height: 0;
+    border-right: 100px solid transparent;
+    border-bottom: 70px solid currentColor;
+    border-left: 100px solid transparent;
+    position: relative;
+    top: -45px;
+    transform: rotate(180deg);
+}
+.shape-star:before {
+    border-bottom: 80px solid currentColor;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -45px;
+    left: -65px;
+    display: block;
+    content: '';
+    transform: rotate(-35deg);
+}
+.shape-star:after {
+    position: absolute;
+    display: block;
+    /* color: currentColor; */
+    top: 3px;
+    left: -105px;
+    width: 0;
+    height: 0;
+    border-right: 100px solid transparent;
+    border-bottom: 70px solid currentColor;
+    border-left: 100px solid transparent;
+    transform: rotate(-70deg);
+    content: '';
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background-color: #ddd;
+}
+
+#results-table {
+    margin-top: 20px;
+    width: 80%;
+    border-collapse: collapse;
+}
+
+#results-table th, #results-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #62a8ea, #9dc6f1);
+    color: #333;
+    line-height: 1.6;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #62a8ea, #9dc6f1); /* 渐变背景 */
+    color: #333;
+    line-height: 1.6;
+}
+header {
+    background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+    backdrop-filter: blur(20px); /* 背景模糊效果 */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header h1 {
+    margin: 0;
+    color: #333;
+    font-size: 2rem;
+}
+nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+nav li {
+    padding: 0.5rem 1rem;
+}
+nav a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+}
+nav a:hover {
+    color: #62a8ea;
+}
+main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 2rem auto; /* 居中显示 */
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    border-radius: 8px; /* 圆角边框 */
+}
+footer {
+    background: linear-gradient(135deg, #62a8ea, #9dc6f1); /* 渐变背景 */
+    color: white;
+    text-align: center;
+    padding: 1rem 2rem;
+    position: static;
+    bottom: 0;
+    width: 100%;
+}
+footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease-in-out;
+}
+footer a:hover {
+    color: #62a8ea;
+}
+
+.user-email {
+  /* 添加适合样式 */
+  display: inline-block;
+  margin-left: 1rem;
+  color: #333; 
+}
+
+.hidden {
+    display: none;
+}
+
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+    <header>
+        <h1>注册</h1>
+        <nav>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="login.html">登录</a></li>
+        </nav>
+    </header>
+
+    <main>
+        <h2>用户注册</h2>
+        <form id="register-form" action="/api/register" method="POST">
+            <div class="form-group">
+                <label for="email-input-reg">邮箱地址</label>
+                <input type="email" id="email-input-reg" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password-input-reg">密码</label>
+                <input type="password" id="password-input-reg" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password-input-reg">确认密码</label>
+                <input type="password" id="confirm-password-input-reg" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn">注册</button>
+        </form>
+
+        <div class="already-have-account">
+            <p>已有账号? <a href="login.html">去登录</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>版权所有 &copy; 2024 alex</p>
+        <p>联系邮箱: 3263471262@qq.com </p>  
+    </footer>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (event) => {
+  event.preventDefault(); // 阻止表单默认提交行为
+
+  const emailInput = document.getElementById('email-input-reg');
+  const passwordInput = document.getElementById('password-input-reg');
+  const confirmPasswordInput = document.getElementById('confirm-password-input-reg');
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const confirm_password = confirmPasswordInput.value;
+
+  // 验证密码一致性
+  if (passwordInput.value !== confirmPasswordInput.value) {
+    alert('两次输入的密码不一致，请重新输入');
+    return;
+  }
+
+  // 验证邮箱格式
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    alert('请输入有效的邮箱地址');
+    return;
+  }
+
+  // 发送异步POST请求到服务器进行注册
+  try {
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        confirm_password,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to register: ${response.statusText}`);
+    }
+
+    // 注册成功，跳转至登录页或其他页面
+    window.location.href = '/login.html';
+  } catch (error) {
+    alert(`注册失败: ${error.message}`);
+  }
+});
+    </script>
+
+</body>
+</html>

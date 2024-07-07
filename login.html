@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <header>
+        <h1>登录</h1>
+        <nav>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="register.html">注册</a></li>
+        </nav>
+    </header>
+
+    <main>
+        <h2>用户登录</h2>
+        <form id="login-form" action="/api/login" method="POST">
+            <div class="form-group">
+                <label for="email-input">邮箱地址</label>
+                <input type="email" id="email-input" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password-input">密码</label>
+                <input type="password" id="password-input" name="password" required>
+            </div>
+            <button type="submit" class="btn">登录</button>
+        </form>
+
+    </main>
+
+    <footer>
+        <p>版权所有 &copy; 2024 alex</p>
+        <p>联系邮箱: 3263471262@qq.com </p>  
+    </footer>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const emailInput = document.getElementById('email-input');
+  const passwordInput = document.getElementById('password-input');
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`登录失败: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    // 登录成功后的操作，例如存储Token、跳转页面等
+    if(data.email) {
+      localStorage.setItem('email', data.email);
+
+      const navEmailElement = document.createElement('li');
+      navEmailElement.textContent = data.email;
+
+      const navList = document.querySelector('nav > li');
+      navList.appendChild(navEmailElement);
+
+      navEmailElement.classList.add('user-email');
+    }
+
+    localStorage.setItem('authToken', data.token);
+    window.location.href = '/index.html';
+  } catch (error) {
+    alert(`登录失败: ${error.message}`);
+  }
+});
+    </script>
+</body>
+</html>
