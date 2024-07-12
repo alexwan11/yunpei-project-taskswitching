@@ -79,7 +79,7 @@
 .shape-star:after {
     position: absolute;
     display: block;
-    /* color: currentColor; */
+    
     top: 3px;
     left: -105px;
     width: 0;

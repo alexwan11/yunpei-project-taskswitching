@@ -1,5 +1,5 @@
 let taskCounter = 0;
-const maxTasks = 10;
+const maxTasks = 50;
 let currentTask = '';
 let taskStartTime = 0;
 const results = [];
@@ -95,7 +95,7 @@ function downloadResults() {
     formData.append('file', blob, 'experiment_results.csv');
 
     // Send the CSV file to the server
-    fetch('http://121.40.133.54:3000/save-results', {
+    fetch('http://121.40.133.54/save-results', {
         method: 'POST',
         body: formData
     })
