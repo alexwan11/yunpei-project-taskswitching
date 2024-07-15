@@ -14,7 +14,6 @@ function startExperimentDifficult2() {
     document.getElementById('experiment-area-difficult-2').style.display = 'flex';
     displayStimulusDifficult2();
     setTimeout(showBothPartsDifficult, 2000);
-    
 }
 
 function displayStimulusDifficult2() {
@@ -56,7 +55,7 @@ function displayStimulusDifficult2() {
         } while (randomColor2 === randomColor1);
 
         if (isShapeTask) {
-            shapeTaskElement.innerHTML = `<div class="shape-${randomShape1}" style="background-color:${randomColor1}"></div><div class="shape-${randomShape2}" style="background-color:${randomColor2}"></div>`;
+            shapeTaskElement.innerHTML = getShapeHtml(randomShape1, randomColor1) + getShapeHtml(randomShape2, randomColor2);
             leftPart.style.visibility = 'visible';
             rightPart.style.visibility = 'hidden';
             newTask = {
@@ -67,7 +66,7 @@ function displayStimulusDifficult2() {
                 color2: randomColor2
             };
         } else {
-            colorTaskElement.innerHTML = `<div class="shape-${randomShape1}" style="background-color:${randomColor1}"></div><div class="shape-${randomShape2}" style="background-color:${randomColor2}"></div>`;
+            colorTaskElement.innerHTML = getShapeHtml(randomShape1, randomColor1) + getShapeHtml(randomShape2, randomColor2);
             rightPart.style.visibility = 'visible';
             leftPart.style.visibility = 'hidden';
             newTask = {
@@ -82,6 +81,16 @@ function displayStimulusDifficult2() {
     lastTaskDifficult2 = newTask;
     taskStartTimeDifficult2 = new Date().getTime();
     taskCounterDifficult2++;
+}
+
+function getShapeHtml(shape, color) {
+    if (shape === 'triangle') {
+        return `<div class="shape-${shape}" style="border-bottom-color:${color};"></div>`;
+    } else if (shape === 'star') {
+        return `<div class="shape-${shape}" style="color:${color};"></div>`;
+    } else {
+        return `<div class="shape-${shape}" style="background-color:${color};"></div>`;
+    }
 }
 
 function hideExperimentScreenDifficult2() {

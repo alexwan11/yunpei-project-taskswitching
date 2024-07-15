@@ -4,15 +4,20 @@ let currentTaskDifficult = '';
 let taskStartTimeDifficult = 0;
 let lastTaskDifficult = '';
 let isExperimentDifficultRunning = false;
+const resultsDifficult = [];
 
 function startExperimentDifficult() {
     if (isExperimentDifficultRunning) return;
     isExperimentDifficultRunning = true;
 
+    // Hide instructions and show the experiment area
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-difficult').style.display = 'flex';
-    displayStimulusDifficult();
-    setTimeout(showBothPartsDifficult, 2000);
+
+    // Show instructions for 2 seconds before starting the task
+    setTimeout(() => {
+        displayStimulusDifficult();
+    }, 2000);
 }
 
 function displayStimulusDifficult() {
@@ -44,15 +49,27 @@ function displayStimulusDifficult() {
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
         if (isShapeTask) {
-            shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="background-color:${randomColor}"></div>`;
+            if (randomShape === 'triangle') {
+                shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="border-bottom-color:${randomColor};"></div>`;
+            } else if (randomShape === 'star') {
+                shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="color:${randomColor};"></div>`;
+            } else {
+                shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="background-color:${randomColor};"></div>`;
+            }
             leftPart.style.visibility = 'visible';
             rightPart.style.visibility = 'hidden';
             newTask = { type: 'shape', shape: randomShape, color: randomColor };
         } else {
-            colorTaskElement.innerHTML = `<div class="shape-circle" style="background-color:${randomColor}"></div>`;
-            rightPart.style.visibility = 'visible';
+            if (randomShape === 'triangle') {
+                colorTaskElement.innerHTML = `<div class="shape-${randomShape}" style="border-bottom-color:${randomColor};"></div>`;
+            } else if (randomShape === 'star') {
+                colorTaskElement.innerHTML = `<div class="shape-${randomShape}" style="color:${randomColor};"></div>`;
+            } else {
+                colorTaskElement.innerHTML = `<div class="shape-${randomShape}" style="background-color:${randomColor};"></div>`;
+            }
             leftPart.style.visibility = 'hidden';
-            newTask = { type: 'color', color: randomColor };
+            rightPart.style.visibility = 'visible';
+            newTask = { type: 'color', shape: randomShape, color: randomColor };
         }
     } while (newTask.shape === lastTaskDifficult.shape && newTask.color === lastTaskDifficult.color && newTask.type === lastTaskDifficult.type);
 
@@ -72,7 +89,7 @@ function hideExperimentScreenDifficult() {
 }
 
 function recordResultDifficult(task, reactionTime, correct) {
-    results.push({
+    resultsDifficult.push({
         blockname: task.type + ' task',
         detailedTask: `${task.color} ${task.shape || 'circle'}`,
         reactionTime: `${reactionTime}ms`,
@@ -82,7 +99,7 @@ function recordResultDifficult(task, reactionTime, correct) {
 
 function downloadResultsDifficult() {
     const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvContent = resultsDifficult.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
     const csvData = csvHeader + csvContent;
     const blob = new Blob([csvData], { type: 'text/csv' });
 
