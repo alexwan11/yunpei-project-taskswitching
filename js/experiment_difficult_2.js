@@ -12,8 +12,9 @@ function startExperimentDifficult2() {
 
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-difficult-2').style.display = 'flex';
-    displayStimulusDifficult2();
-    setTimeout(showBothPartsDifficult, 2000);
+    setTimeout(() => {
+        displayStimulusDifficult2();
+    }, 2000);
 }
 
 function displayStimulusDifficult2() {
