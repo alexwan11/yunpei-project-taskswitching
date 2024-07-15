@@ -12,8 +12,11 @@ function startExperiment() {
 
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area').style.display = 'flex';
-    showBothParts();
+
+    // Show the instructions for 2 seconds before starting the task
+    setTimeout(showBothParts, 2000);
 }
+
 
 function showBothParts() {
     const leftPart = document.getElementById('left-part-experiment');
@@ -75,12 +78,13 @@ function hideExperimentScreen() {
     isExperimentRunning = false;
 }
 
-function recordResult(task, reactionTime, correct) {
+function recordResult(task, reactionTime, correct, keyPressed) {
     results.push({
         blockname: task.type + ' task',
         detailedTask: `${task.color} ${task.shape}`,
         reactionTime: `${reactionTime}ms`,
-        rw: correct ? 'right' : 'wrong'
+        rw: correct ? 'right' : 'wrong',
+        keyPressed: keyPressed  // Add keyPressed to the results object
     });
 }
 
@@ -139,7 +143,7 @@ document.addEventListener('keydown', (event) => {
         }
     }
 
-    recordResult(currentTask, reactionTime, correct);
+    recordResult(currentTask, reactionTime, correct, key); // Pass the key to recordResult
 
     if (correct) {
         displayStimulus();
@@ -149,6 +153,7 @@ document.addEventListener('keydown', (event) => {
         setTimeout(displayStimulus, 2000);
     }
 });
+
 
 function clearScreen() {
     document.getElementById('shape-task-experiment').innerHTML = '';

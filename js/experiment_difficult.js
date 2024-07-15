@@ -11,24 +11,15 @@ function startExperimentDifficult() {
 
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-difficult').style.display = 'flex';
-    showBothPartsDifficult();
-}
-
-function showBothPartsDifficult() {
-    const leftPart = document.getElementById('left-part-experiment-difficult');
-    const rightPart = document.getElementById('right-part-experiment-difficult');
-
-    leftPart.style.visibility = 'visible';
-    rightPart.style.visibility = 'visible';
-
-    setTimeout(displayStimulusDifficult, 2000);
+    displayStimulusDifficult();
+    setTimeout(showBothPartsDifficult, 2000);
 }
 
 function displayStimulusDifficult() {
     if (taskCounterDifficult >= maxTasksDifficult) {
         alert("Experiment Completed!");
-        hideExperimentDifficultScreen();
-        downloadResults();
+        hideExperimentScreenDifficult();
+        downloadResultsDifficult();
         return;
     }
 
@@ -36,37 +27,34 @@ function displayStimulusDifficult() {
     const colorTaskElement = document.getElementById('color-task-experiment-difficult');
     const leftPart = document.getElementById('left-part-experiment-difficult');
     const rightPart = document.getElementById('right-part-experiment-difficult');
-    const shapes = ['circle', 'rectangle'];
-    const combinedShapes = ['circle-in-square', 'square-in-circle'];
-    const colors = ['yellow', 'blue'];
+    const shapes = ['circle', 'rectangle', 'triangle', 'star'];
+    const colors = ['yellow', 'blue', 'green', 'red'];
 
     let isShapeTask = Math.random() < 0.5;
     let newTask;
 
+    // Clear previous task
+    shapeTaskElement.innerHTML = '';
+    colorTaskElement.innerHTML = '';
+    leftPart.style.visibility = 'hidden';
+    rightPart.style.visibility = 'hidden';
+
     do {
         const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
-        const combinedShape = combinedShapes[Math.floor(Math.random() * combinedShapes.length)];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const innerColor = colors[Math.floor(Math.random() * colors.length)];
 
         if (isShapeTask) {
-            const shapeClass = Math.random() < 0.7 ? combinedShape : randomShape; // 70% chance for combined shapes
-            shapeTaskElement.innerHTML = shapeClass.includes('in') ?
-                `<div class="shape-${shapeClass}" style="background-color:${randomColor}"><div class="inner-shape" style="background-color:${innerColor}"></div></div>` :
-                `<div class="shape-${shapeClass}" style="background-color:${randomColor}"></div>`;
+            shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="background-color:${randomColor}"></div>`;
             leftPart.style.visibility = 'visible';
             rightPart.style.visibility = 'hidden';
-            newTask = { type: 'shape', shape: shapeClass, outerColor: randomColor, innerColor: innerColor };
+            newTask = { type: 'shape', shape: randomShape, color: randomColor };
         } else {
-            const shapeClass = Math.random() < 0.7 ? combinedShape : randomShape; // 70% chance for combined shapes
-            colorTaskElement.innerHTML = shapeClass.includes('in') ?
-                `<div class="shape-${shapeClass}" style="background-color:${randomColor}"><div class="inner-shape" style="background-color:${innerColor}"></div></div>` :
-                `<div class="shape-${shapeClass}" style="background-color:${randomColor}"></div>`;
-            leftPart.style.visibility = 'hidden';
+            colorTaskElement.innerHTML = `<div class="shape-circle" style="background-color:${randomColor}"></div>`;
             rightPart.style.visibility = 'visible';
-            newTask = { type: 'color', shape: shapeClass, outerColor: randomColor, innerColor: innerColor };
+            leftPart.style.visibility = 'hidden';
+            newTask = { type: 'color', color: randomColor };
         }
-    } while (newTask.shape === lastTaskDifficult.shape && newTask.innerColor === lastTaskDifficult.innerColor && newTask.outerColor === lastTaskDifficult.outerColor && newTask.type === lastTaskDifficult.type);
+    } while (newTask.shape === lastTaskDifficult.shape && newTask.color === lastTaskDifficult.color && newTask.type === lastTaskDifficult.type);
 
     currentTaskDifficult = newTask;
     lastTaskDifficult = newTask;
@@ -74,7 +62,7 @@ function displayStimulusDifficult() {
     taskCounterDifficult++;
 }
 
-function hideExperimentDifficultScreen() {
+function hideExperimentScreenDifficult() {
     document.getElementById('experiment-area-difficult').style.display = 'none';
     document.getElementById('left-part-experiment-difficult').style.visibility = 'hidden';
     document.getElementById('right-part-experiment-difficult').style.visibility = 'hidden';
@@ -86,9 +74,46 @@ function hideExperimentDifficultScreen() {
 function recordResultDifficult(task, reactionTime, correct) {
     results.push({
         blockname: task.type + ' task',
-        detailedTask: `${task.outerColor} ${task.shape} with ${task.innerColor} inner`,
+        detailedTask: `${task.color} ${task.shape || 'circle'}`,
         reactionTime: `${reactionTime}ms`,
         rw: correct ? 'right' : 'wrong'
+    });
+}
+
+function downloadResultsDifficult() {
+    const csvHeader = "blockname,detailed task,reaction time,rw\n";
+    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvData = csvHeader + csvContent;
+    const blob = new Blob([csvData], { type: 'text/csv' });
+
+    // Prepare FormData for the server
+    const formData = new FormData();
+    formData.append('file', blob, 'experiment_results.csv');
+
+    // Send the CSV file to the server
+    fetch('http://121.40.133.54/save-results', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Results saved successfully on the server');
+        } else {
+            return response.text().then(text => { throw new Error(text); });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error occurred while saving results: ' + error.message);
+    })
+    .finally(() => {
+        // Always download the CSV file locally
+        const encodedUri = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "experiment_results.csv");
+        document.body.appendChild(link);
+        link.click();
     });
 }
 
@@ -102,26 +127,16 @@ document.addEventListener('keydown', (event) => {
     if (currentTaskDifficult.type === 'shape') {
         if ((currentTaskDifficult.shape === 'circle' && key === 'b') ||
             (currentTaskDifficult.shape === 'rectangle' && key === 'n') ||
-            (currentTaskDifficult.shape === 'circle-in-square' && key === 'n') ||
-            (currentTaskDifficult.shape === 'square-in-circle' && key === 'b')) {
+            (currentTaskDifficult.shape === 'triangle' && key === 'v') ||
+            (currentTaskDifficult.shape === 'star' && key === 'm')) {
             correct = true;
         }
     } else if (currentTaskDifficult.type === 'color') {
-        if (currentTaskDifficult.shape.includes('circle-in-square')) {
-            if ((currentTaskDifficult.innerColor === 'yellow' && key === 'b') ||
-                (currentTaskDifficult.innerColor === 'blue' && key === 'n')) {
-                correct = true;
-            }
-        } else if (currentTaskDifficult.shape.includes('square-in-circle')) {
-            if ((currentTaskDifficult.innerColor === 'yellow' && key === 'b') ||
-                (currentTaskDifficult.innerColor === 'blue' && key === 'n')) {
-                correct = true;
-            }
-        } else {
-            if ((currentTaskDifficult.outerColor === 'yellow' && key === 'b') ||
-                (currentTaskDifficult.outerColor === 'blue' && key === 'n')) {
-                correct = true;
-            }
+        if ((currentTaskDifficult.color === 'yellow' && key === 'b') ||
+            (currentTaskDifficult.color === 'blue' && key === 'n') ||
+            (currentTaskDifficult.color === 'green' && key === 'v') ||
+            (currentTaskDifficult.color === 'red' && key === 'm')) {
+            correct = true;
         }
     }
 
@@ -144,35 +159,3 @@ function clearScreenDifficult() {
 }
 
 document.getElementById('start-experiment-difficult-button').addEventListener('click', startExperimentDifficult);
-
-function download_difficult_Results() {
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
-    const csvData = csvHeader + csvContent;
-
-    fetch('http://121.40.133.54/save-results', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(results)
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Results saved successfully on the server');
-
-            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvData);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "experiment_results.csv");
-            document.body.appendChild(link);
-            link.click();
-        } else {
-            return response.text().then(text => { throw new Error(text); });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error occurred while saving results: ' + error.message);
-    });
-}

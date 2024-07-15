@@ -41,8 +41,8 @@ app.post('/save-results', upload.single('file'), (req, res) => {
     const results = req.body;
     console.log('Received results:', results);
 
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvHeader = "blockname,detailed task,reaction time,rw,keyPressed\n"; // Add keyPressed to CSV header
+    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw},${e.keyPressed}`).join("\n"); // Include keyPressed in CSV content
     const csvData = csvHeader + csvContent;
 
     const directory = '/home/alex/project';
@@ -58,6 +58,7 @@ app.post('/save-results', upload.single('file'), (req, res) => {
         }
     });
 });
+
 
 // Start server
 app.listen(port, () => {

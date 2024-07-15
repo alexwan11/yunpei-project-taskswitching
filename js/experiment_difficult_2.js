@@ -13,6 +13,8 @@ function startExperimentDifficult2() {
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-difficult-2').style.display = 'flex';
     displayStimulusDifficult2();
+    setTimeout(showBothPartsDifficult, 2000);
+    
 }
 
 function displayStimulusDifficult2() {
@@ -40,21 +42,41 @@ function displayStimulusDifficult2() {
     rightPart.style.visibility = 'hidden';
 
     do {
-        const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomShape1 = shapes[Math.floor(Math.random() * shapes.length)];
+        const randomColor1 = colors[Math.floor(Math.random() * colors.length)];
+        let randomShape2;
+        let randomColor2;
+
+        do {
+            randomShape2 = shapes[Math.floor(Math.random() * shapes.length)];
+        } while (randomShape2 === randomShape1);
+
+        do {
+            randomColor2 = colors[Math.floor(Math.random() * colors.length)];
+        } while (randomColor2 === randomColor1);
 
         if (isShapeTask) {
-            shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="background-color:${randomColor}"></div>`;
+            shapeTaskElement.innerHTML = `<div class="shape-${randomShape1}" style="background-color:${randomColor1}"></div><div class="shape-${randomShape2}" style="background-color:${randomColor2}"></div>`;
             leftPart.style.visibility = 'visible';
             rightPart.style.visibility = 'hidden';
-            newTask = { type: 'shape', shape: randomShape, color: randomColor };
+            newTask = {
+                type: 'shape',
+                shape1: randomShape1,
+                color1: randomColor1,
+                shape2: randomShape2,
+                color2: randomColor2
+            };
         } else {
-            colorTaskElement.innerHTML = `<div class="shape-circle" style="background-color:${randomColor}"></div>`;
+            colorTaskElement.innerHTML = `<div class="shape-${randomShape1}" style="background-color:${randomColor1}"></div><div class="shape-${randomShape2}" style="background-color:${randomColor2}"></div>`;
             rightPart.style.visibility = 'visible';
             leftPart.style.visibility = 'hidden';
-            newTask = { type: 'color', color: randomColor };
+            newTask = {
+                type: 'color',
+                color1: randomColor1,
+                color2: randomColor2
+            };
         }
-    } while (newTask.shape === lastTaskDifficult2.shape && newTask.color === lastTaskDifficult2.color && newTask.type === lastTaskDifficult2.type);
+    } while (newTask.shape1 === lastTaskDifficult2.shape1 && newTask.color1 === lastTaskDifficult2.color1 && newTask.shape2 === lastTaskDifficult2.shape2 && newTask.color2 === lastTaskDifficult2.color2 && newTask.type === lastTaskDifficult2.type);
 
     currentTaskDifficult2 = newTask;
     lastTaskDifficult2 = newTask;
@@ -74,7 +96,7 @@ function hideExperimentScreenDifficult2() {
 function recordResultDifficult2(task, reactionTime, correct) {
     resultsDifficult2.push({
         blockname: task.type + ' task',
-        detailedTask: `${task.color} ${task.shape || 'circle'}`,
+        detailedTask: `${task.color1} ${task.shape1 || 'circle'} and ${task.color2} ${task.shape2 || 'circle'}`,
         reactionTime: `${reactionTime}ms`,
         rw: correct ? 'right' : 'wrong'
     });
@@ -91,7 +113,7 @@ function downloadResultsDifficult2() {
     formData.append('file', blob, 'experiment_results_difficult_2.csv');
 
     // Send the CSV file to the server
-    fetch('http://121.40.133.54:3000/save-results', {
+    fetch('http://121.40.133.54/save-results', {
         method: 'POST',
         body: formData
     })
@@ -125,17 +147,17 @@ document.addEventListener('keydown', (event) => {
     let correct = false;
 
     if (currentTaskDifficult2.type === 'shape') {
-        if ((currentTaskDifficult2.shape === 'circle' && key === 'b') || 
-            (currentTaskDifficult2.shape === 'rectangle' && key === 'n') || 
-            (currentTaskDifficult2.shape === 'triangle' && key === 'v') || 
-            (currentTaskDifficult2.shape === 'star' && key === 'm')) {
+        if ((currentTaskDifficult2.shape1 === 'circle' && key === 'b') ||
+            (currentTaskDifficult2.shape1 === 'rectangle' && key === 'n') ||
+            (currentTaskDifficult2.shape1 === 'triangle' && key === 'v') ||
+            (currentTaskDifficult2.shape1 === 'star' && key === 'm')) {
             correct = true;
         }
     } else if (currentTaskDifficult2.type === 'color') {
-        if ((currentTaskDifficult2.color === 'yellow' && key === 'b') || 
-            (currentTaskDifficult2.color === 'blue' && key === 'n') || 
-            (currentTaskDifficult2.color === 'green' && key === 'v') || 
-            (currentTaskDifficult2.color === 'red' && key === 'm')) {
+        if ((currentTaskDifficult2.color1 === 'yellow' && key === 'b') ||
+            (currentTaskDifficult2.color1 === 'blue' && key === 'n') ||
+            (currentTaskDifficult2.color1 === 'green' && key === 'v') ||
+            (currentTaskDifficult2.color1 === 'red' && key === 'm')) {
             correct = true;
         }
     }
