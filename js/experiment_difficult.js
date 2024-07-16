@@ -10,6 +10,9 @@ function startExperimentDifficult() {
     if (isExperimentDifficultRunning) return;
     isExperimentDifficultRunning = true;
 
+    // Clear the results array to reset data cache
+    resultsDifficult.length = 0;
+
     // Hide instructions and show the experiment area
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-difficult').style.display = 'flex';
@@ -88,24 +91,25 @@ function hideExperimentScreenDifficult() {
     isExperimentDifficultRunning = false;
 }
 
-function recordResultDifficult(task, reactionTime, correct) {
+function recordResultDifficult(task, reactionTime, correct, pressedKey) {
     resultsDifficult.push({
         blockname: task.type + ' task',
         detailedTask: `${task.color} ${task.shape || 'circle'}`,
         reactionTime: `${reactionTime}ms`,
-        rw: correct ? 'right' : 'wrong'
+        rw: correct ? 'right' : 'wrong',
+        pressedKey: pressedKey
     });
 }
 
 function downloadResultsDifficult() {
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = resultsDifficult.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvHeader = "blockname,detailed task,reaction time,rw,pressed key\n";
+    const csvContent = resultsDifficult.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw},${e.pressedKey}`).join("\n");
     const csvData = csvHeader + csvContent;
     const blob = new Blob([csvData], { type: 'text/csv' });
 
     // Prepare FormData for the server
     const formData = new FormData();
-    formData.append('file', blob, 'experiment_results.csv');
+    formData.append('file', blob, 'experiment_results_difficult.csv');
 
     // Send the CSV file to the server
     fetch('http://121.40.133.54/save-results', {
@@ -128,7 +132,7 @@ function downloadResultsDifficult() {
         const encodedUri = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "experiment_results.csv");
+        link.setAttribute("download", "experiment_results_difficult.csv");
         document.body.appendChild(link);
         link.click();
     });
@@ -157,7 +161,7 @@ document.addEventListener('keydown', (event) => {
         }
     }
 
-    recordResultDifficult(currentTaskDifficult, reactionTime, correct);
+    recordResultDifficult(currentTaskDifficult, reactionTime, correct, key);
 
     if (correct) {
         displayStimulusDifficult();

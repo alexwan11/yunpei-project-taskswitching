@@ -13,6 +13,9 @@ function startExperimentFlash() {
     if (isExperimentRunningFlash) return;
     isExperimentRunningFlash = true;
 
+    // Clear the results array to reset data cache
+    resultsFlash.length = 0;
+
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-flash').style.display = 'flex';
 
@@ -78,18 +81,19 @@ function hideExperimentScreenFlash() {
     isExperimentRunningFlash = false;
 }
 
-function recordResultFlash(task, reactionTime, correct) {
+function recordResultFlash(task, reactionTime, correct, pressedKey) {
     resultsFlash.push({
         blockname: task.type + ' task',
         detailedTask: `${task.color} ${task.shape || 'circle'}`,
         reactionTime: `${reactionTime}ms`,
-        rw: correct ? 'right' : 'wrong'
+        rw: correct ? 'right' : 'wrong',
+        pressedKey: pressedKey
     });
 }
 
 function downloadResultsFlash() {
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = resultsFlash.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvHeader = "blockname,detailed task,reaction time,rw,pressed key\n";
+    const csvContent = resultsFlash.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw},${e.pressedKey}`).join("\n");
     const csvData = csvHeader + csvContent;
     const blob = new Blob([csvData], { type: 'text/csv' });
 
@@ -143,22 +147,18 @@ document.addEventListener('keydown', (event) => {
         }
     }
 
-    recordResultFlash(currentTaskFlash, reactionTime, correct);
+    recordResultFlash(currentTaskFlash, reactionTime, correct, key);
 
-    // Inside the keydown event listener where correct === true
-    if (correct) {
-    // Randomly decide whether to flash an image
-    if (Math.random() < 0.5) {
-        const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)];
-        const flashAreaElement = document.getElementById('flash-area');
-        flashAreaElement.innerHTML = `<img src="${imagesPath}${randomImage}" alt="Flashing Image" style="width: 200px; height: 200px;">`;
-        setTimeout(() => {
-            flashAreaElement.innerHTML = '';
-        }, 500); // Flash the image for 0.5 seconds (500 milliseconds)
-    }
-    displayStimulusFlash();
-}
-
+    // Flash an image for 0.5 seconds between each task
+    const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+    const flashAreaElement = document.getElementById('flash-area');
+    flashAreaElement.innerHTML = `<img src="${imagesPath}${randomImage}" alt="Flashing Image" style="width: 200px; height: 200px;">`;
+    flashAreaElement.style.backgroundColor = 'white'; // Change background color to white
+    setTimeout(() => {
+        flashAreaElement.innerHTML = '';
+        flashAreaElement.style.backgroundColor = 'black'; // Revert background color to black
+        displayStimulusFlash();
+    }, 500); // Flash the image for 0.5 seconds (500 milliseconds)
 });
 
 function clearScreenFlash() {

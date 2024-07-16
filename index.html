@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>task switching test</h1>
+        <h1>Task Switching Test</h1>
         <nav>
             <ul>
                 <li id="user-authentication-status">
@@ -23,7 +23,65 @@
         <div class="instructions">
             <h1>Instructions</h1>
             <div id="instructions-text">
-                When the task starts, you will see either a shape or color on the screen. If a shape appears, press the corresponding key based on the shape. If a color appears, press the corresponding key based on the color. The experiment will consist of 50 tasks. Try to respond as quickly and accurately as possible.
+                <p><strong>Task Switching Experiment 1:</strong></p>
+                <p>When the task starts, you will see either a shape or color on the screen.</p>
+                <p>If a shape appears, press the corresponding key based on the shape.</p>
+                <ul>
+                    <li>Press 'b' for circle.</li>
+                    <li>Press 'n' for rectangle.</li>
+                </ul>
+                <p>If a color appears, press the corresponding key based on the color.</p>
+                <ul>
+                    <li>Press 'b' for yellow.</li>
+                    <li>Press 'n' for blue.</li>
+                </ul>
+                <p>The experiment will consist of 50 tasks.</p>
+                <p>Try to respond as quickly and accurately as possible.</p>
+
+                <br>
+
+                <p><strong>Task Switching Experiment 2:</strong></p>
+                <p>This experiment is more difficult than Experiment 1.</p>
+                <ul>
+                    <li><strong>Shape keys:</strong></li>
+                    <li>'b' for circle</li>
+                    <li>'n' for rectangle</li>
+                    <li>'v' for triangle</li>
+                    <li>'m' for star</li>
+                </ul>
+                <ul>
+                    <li><strong>Color keys:</strong></li>
+                    <li>'b' for yellow</li>
+                    <li>'n' for blue</li>
+                    <li>'v' for green</li>
+                    <li>'m' for red</li>
+                </ul>
+                <p>The experiment will consist of 50 tasks.</p>
+                <p>Try to respond as quickly and accurately as possible.</p>
+
+                <br>
+
+                <p><strong>Task Switching Experiment 3:</strong></p>
+                <p>This experiment is similar to Experiment 2 but with a higher difficulty.</p>
+                <p>You will see two shapes and colors at a time.</p>
+                <p>Press the corresponding key based on the shape or color that appears on the top.</p>
+                <ul>
+                    <li><strong>Shape keys:</strong></li>
+                    <li>'b' for circle</li>
+                    <li>'n' for rectangle</li>
+                    <li>'v' for triangle</li>
+                    <li>'m' for star</li>
+                </ul>
+                <ul>
+                    <li><strong>Color keys:</strong></li>
+                    <li>'b' for yellow</li>
+                    <li>'n' for blue</li>
+                    <li>'v' for green</li>
+                    <li>'m' for red</li>
+                </ul>
+                <p>The shapes and colors in each pair will always be different.</p>
+                <p>The experiment will consist of 50 tasks.</p>
+                <p>Try to respond as quickly and accurately as possible.</p>
             </div>
             <div id="instructions-text-difficult"></div>
             <button id="start-sample-button" class="button">Start Sample</button>
@@ -45,48 +103,39 @@
         <div class="experiment-area" id="experiment-area">
             <div class="left-part-experiment" id="left-part-experiment">
                 <div class="stimulus" id="shape-task-experiment"></div>
-                <!-- <p>Shape Task: Press 'b' for circle, 'n' for rectangle.</p> -->
             </div>
             <div class="right-part-experiment" id="right-part-experiment">
                 <div class="stimulus" id="color-task-experiment"></div>
-                <!-- <p>Color Task: Press 'b' for yellow, 'n' for blue.</p> -->
             </div>
         </div>
         <div class="experiment-area" id="experiment-area-difficult">
             <div class="left-part-experiment" id="left-part-experiment-difficult">
                 <div class="stimulus" id="shape-task-experiment-difficult"></div>
-                <!-- <p>Shape Task: Press 'b' for circle, 'n' for rectangle.</p> -->
             </div>
             <div class="right-part-experiment" id="right-part-experiment-difficult">
                 <div class="stimulus" id="color-task-experiment-difficult"></div>
-                <!-- <p>Color Task: Press 'b' for yellow, 'n' for blue.</p> -->
             </div>
         </div>
         <div class="experiment-area" id="experiment-area-difficult-2">
             <div class="left-part-experiment" id="left-part-experiment-difficult-2">
                 <div class="stimulus" id="shape-task-experiment-difficult-2"></div>
-                <!-- <p>Shape Task: Press 'b' for circle, 'n' for rectangle, 'v' for triangle, 'm' for star.</p> -->
             </div>
             <div class="right-part-experiment" id="right-part-experiment-difficult-2">
                 <div class="stimulus" id="color-task-experiment-difficult-2"></div>
-                <!-- <p>Color Task: Press 'b' for yellow, 'n' for blue, 'v' for green, 'm' for red.</p> -->
             </div>
         </div>
-        <div class="experiment-area" id="experiment-area-flash">
+        <div class="flash-area" id="flash-area">
             <div class="left-part-experiment" id="left-part-experiment-flash">
                 <div class="stimulus" id="shape-task-experiment-flash"></div>
-                <!-- <p>Shape Task: Press 'b' for circle, 'n' for rectangle.</p> -->
             </div>
             <div class="right-part-experiment" id="right-part-experiment-flash">
                 <div class="stimulus" id="color-task-experiment-flash"></div>
-                <!-- <p>Color Task: Press 'b' for yellow, 'n' for blue.</p> -->
             </div>
-            <div class="flash-area" id="flash-area"></div>
         </div>
     </main>
     <footer>
-        <p>版权所有 &copy; 2024 alex</p>
-        <p>联系邮箱: 3263471262@qq.com </p>  
+        <p>版权所有 &copy; 2024 Alex</p>
+        <p>联系邮箱: 3263471262@qq.com</p>
     </footer>
     <table id="results-table"></table>
     <script src="js/sample.js"></script>

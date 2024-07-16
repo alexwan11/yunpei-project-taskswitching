@@ -11,8 +11,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 118vh;
+    width: 110vh;
     height: 50vh;
+    margin: 0 auto;
 }
 
 .left-part, .right-part, .left-part-experiment, .right-part-experiment, .left-part-experiment-difficult, .right-part-experiment-difficult {
@@ -191,4 +192,10 @@ footer a:hover {
     display: none;
 }
 
+#instructions-text {
+    text-align: center;
+    margin: 20px;
+    font-size: 18px;
+    line-height: 1.6;
+}
 

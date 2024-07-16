@@ -10,6 +10,9 @@ function startExperimentDifficult2() {
     if (isExperimentRunningDifficult2) return;
     isExperimentRunningDifficult2 = true;
 
+    // Clear the results array to reset data cache
+    resultsDifficult2.length = 0;
+
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area-difficult-2').style.display = 'flex';
     setTimeout(() => {
@@ -103,18 +106,19 @@ function hideExperimentScreenDifficult2() {
     isExperimentRunningDifficult2 = false;
 }
 
-function recordResultDifficult2(task, reactionTime, correct) {
+function recordResultDifficult2(task, reactionTime, correct, pressedKey) {
     resultsDifficult2.push({
         blockname: task.type + ' task',
         detailedTask: `${task.color1} ${task.shape1 || 'circle'} and ${task.color2} ${task.shape2 || 'circle'}`,
         reactionTime: `${reactionTime}ms`,
-        rw: correct ? 'right' : 'wrong'
+        rw: correct ? 'right' : 'wrong',
+        pressedKey: pressedKey
     });
 }
 
 function downloadResultsDifficult2() {
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = resultsDifficult2.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvHeader = "blockname,detailed task,reaction time,rw,pressed key\n";
+    const csvContent = resultsDifficult2.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw},${e.pressedKey}`).join("\n");
     const csvData = csvHeader + csvContent;
     const blob = new Blob([csvData], { type: 'text/csv' });
 
@@ -172,7 +176,7 @@ document.addEventListener('keydown', (event) => {
         }
     }
 
-    recordResultDifficult2(currentTaskDifficult2, reactionTime, correct);
+    recordResultDifficult2(currentTaskDifficult2, reactionTime, correct, key);
 
     if (correct) {
         displayStimulusDifficult2();

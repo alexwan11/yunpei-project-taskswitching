@@ -10,13 +10,13 @@ function startExperiment() {
     if (isExperimentRunning) return;
     isExperimentRunning = true;
 
+    // Clear the results array to reset data cache
+    results.length = 0;
+
     document.querySelector('.instructions').style.display = 'none';
     document.getElementById('experiment-area').style.display = 'flex';
-
-    // Show the instructions for 2 seconds before starting the task
-    setTimeout(showBothParts, 2000);
+    showBothParts();
 }
-
 
 function showBothParts() {
     const leftPart = document.getElementById('left-part-experiment');
@@ -49,7 +49,7 @@ function displayStimulus() {
     do {
         const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        
+
         if (isShapeTask) {
             shapeTaskElement.innerHTML = `<div class="shape-${randomShape}" style="background-color:${randomColor}"></div>`;
             leftPart.style.visibility = 'visible';
@@ -78,19 +78,19 @@ function hideExperimentScreen() {
     isExperimentRunning = false;
 }
 
-function recordResult(task, reactionTime, correct, keyPressed) {
+function recordResult(task, reactionTime, correct, pressedKey) {
     results.push({
         blockname: task.type + ' task',
         detailedTask: `${task.color} ${task.shape}`,
         reactionTime: `${reactionTime}ms`,
         rw: correct ? 'right' : 'wrong',
-        keyPressed: keyPressed  // Add keyPressed to the results object
+        pressedKey: pressedKey
     });
 }
 
 function downloadResults() {
-    const csvHeader = "blockname,detailed task,reaction time,rw\n";
-    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw}`).join("\n");
+    const csvHeader = "blockname,detailed task,reaction time,rw,pressed key\n";
+    const csvContent = results.map(e => `${e.blockname},${e.detailedTask},${e.reactionTime},${e.rw},${e.pressedKey}`).join("\n");
     const csvData = csvHeader + csvContent;
     const blob = new Blob([csvData], { type: 'text/csv' });
 
@@ -125,7 +125,6 @@ function downloadResults() {
     });
 }
 
-
 document.addEventListener('keydown', (event) => {
     if (!isExperimentRunning) return;
 
@@ -143,7 +142,7 @@ document.addEventListener('keydown', (event) => {
         }
     }
 
-    recordResult(currentTask, reactionTime, correct, key); // Pass the key to recordResult
+    recordResult(currentTask, reactionTime, correct, key);
 
     if (correct) {
         displayStimulus();
@@ -153,7 +152,6 @@ document.addEventListener('keydown', (event) => {
         setTimeout(displayStimulus, 2000);
     }
 });
-
 
 function clearScreen() {
     document.getElementById('shape-task-experiment').innerHTML = '';
